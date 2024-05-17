@@ -1,0 +1,19 @@
+name: 'Spark-ui scan adoption script'
+description: 'Detects the adoption of the Spark UI in the codebase and generates a report.'
+author: 'Adevinta'
+
+# Define your inputs here.
+inputs:
+  configuration:
+    description: 'Configuration file for the script.'
+    required: false
+    default: './spark-ui.json'
+
+
+# Define your outputs here.
+outputs:
+
+# Environment
+runs:
+  using: 'node20'
+  main: 'index.js'
