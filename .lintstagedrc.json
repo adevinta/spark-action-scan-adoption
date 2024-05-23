@@ -1,0 +1,6 @@
+{
+  "src/**/*.{js,jsx,ts,tsx,mjs,mts,cjs,cts}": [
+    "eslint --config .eslintrc.cjs --fix",
+    "prettier --config .prettierrc.cjs --write"
+  ]
+}

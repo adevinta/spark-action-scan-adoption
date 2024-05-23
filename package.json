@@ -6,8 +6,14 @@
   "types": "types/index.d.ts",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "commit": "git-cz"
+    "build": "npm run clean && ncc build src/index.ts",
+    "build:types": "tsc src/types.ts -t es5 --declaration --allowJs --emitDeclarationOnly --outDir types",
+    "clean": "rm -rf dist types",
+    "commit": "git-cz",
+    "prepare": "husky install",
+    "lint": "eslint --config .eslintrc.cjs src/**/*.ts --cache",
+    "lint:fix": "eslint --config .eslintrc.cjs src/**/*.ts --fix",
+    "lint:staged": "lint-staged --config .lintstagedrc.json"
   },
   "engines": {
     "node": ">=20.0.0 <21.0.0"
@@ -24,6 +30,38 @@
     "@commitlint/config-conventional": "17.8.1",
     "@commitlint/cz-commitlint": "17.8.1",
     "@commitlint/prompt-cli": "17.8.1",
-    "commitizen": "4.3.0"
+    "@spark-ui/tailwind-plugins": "^3.7.2",
+    "@spark-ui/theme-utils": "^4.1.1",
+    "@typescript-eslint/eslint-plugin": "5.62.0",
+    "@typescript-eslint/parser": "5.62.0",
+    "@vercel/ncc": "^0.38.0",
+    "commitizen": "4.3.0",
+    "eslint": "8.57.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-config-standard": "17.1.0",
+    "eslint-plugin-import": "2.29.1",
+    "eslint-plugin-n": "15.7.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "5.1.3",
+    "eslint-plugin-promise": "6.1.1",
+    "eslint-plugin-simple-import-sort": "10.0.0",
+    "eslint-plugin-standard": "5.0.0",
+    "eslint-plugin-tailwindcss": "3.15.1",
+    "eslint-plugin-testing-library": "5.11.1",
+    "husky": "8.0.3",
+    "lint-staged": "13.3.0",
+    "prettier-plugin-tailwindcss": "^0.5.14",
+    "typescript": "5.1.6"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/exec": "^1.1.1",
+    "@actions/github": "^6.0.0",
+    "@actions/glob": "^0.4.0",
+    "@actions/io": "^1.1.3",
+    "@octokit/core": "^5.0.1",
+    "@octokit/plugin-request-log": "^4.0.0",
+    "@octokit/plugin-retry": "^6.0.1",
+    "@types/node": "^20.12.12"
   }
 }

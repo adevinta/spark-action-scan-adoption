@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "declaration": false,
+    "baseUrl": ".",
+    "composite": false,
+    "downlevelIteration": true,
+    "emitDeclarationOnly": false,
+    "noEmit": true
+  },
+  "exclude": ["node_modules"]
+}
