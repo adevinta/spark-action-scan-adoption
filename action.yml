@@ -2,6 +2,11 @@ name: 'Spark-ui scan adoption script'
 description: 'Detects the adoption of the Spark UI in the codebase and generates a report.'
 author: 'Adevinta'
 
+# define the gh marketplace branding
+branding:
+  icon: 'activity'
+  color: 'blue'
+
 # Define your inputs here.
 inputs:
   configuration:
