@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "types": "types/index.d.ts",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "npm run clean && ncc build src/index.ts",
+    "build": "npm run clean && ncc build src/index.ts && rm dist/package.json",
     "build:types": "tsc src/types.ts -t es5 --declaration --allowJs --emitDeclarationOnly --outDir types",
     "clean": "rm -rf dist types",
     "commit": "git-cz",
