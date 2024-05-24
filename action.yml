@@ -21,6 +21,9 @@ inputs:
   github-token:
     description: 'GitHub token'
     required: true
+  debug:
+    description: Whether to tell the GitHub client to log details of its requests. true or false. Default is to run in debug mode when the GitHub Actions step debug logging is turned on.
+    default: ${{ runner.debug == '1' }}
 
 
 # Define your outputs here.
