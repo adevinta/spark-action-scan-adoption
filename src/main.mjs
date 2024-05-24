@@ -1,17 +1,16 @@
 import * as core from '@actions/core'
-import { context, getOctokit } from '@actions/github'
-import { defaults as defaultGitHubOptions } from '@actions/github/lib/utils'
+import * as github from '@actions/github'
+import { defaults as defaultGitHubOptions } from '@actions/github/lib/utils.js'
 import { requestLog } from '@octokit/plugin-request-log'
 import { retry } from '@octokit/plugin-retry'
 
-import { getRetryOptions, parseNumberArray } from './retry-options'
-import { Options } from './types'
+import { getRetryOptions, parseNumberArray } from './retry-options.mjs'
 
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
-export async function main(): Promise<void> {
+export async function main() {
   const token = core.getInput('github-token', { required: true })
   const debug = core.getBooleanInput('debug')
   const userAgent = core.getInput('user-agent')
@@ -21,7 +20,7 @@ export async function main(): Promise<void> {
 
   const [retryOpts, requestOpts] = getRetryOptions(retries, exemptStatusCodes, defaultGitHubOptions)
 
-  const opts: Options = {
+  const opts = {
     log: debug ? console : undefined,
     userAgent: userAgent || undefined,
     previews: previews ? previews.split(',') : undefined,
@@ -29,9 +28,9 @@ export async function main(): Promise<void> {
     request: requestOpts,
   }
 
-  const github = getOctokit(token, opts, retry, requestLog)
+  const gh = github.getOctokit(token, opts, retry, requestLog)
 
-  console.log(github) // eslint-disable-line no-console
+  console.log(gh) // eslint-disable-line no-console
 
   const whoToGreet = core.getInput('who-to-greet', { required: true })
   core.info(`Hello, ${whoToGreet}!`)
@@ -41,15 +40,10 @@ export async function main(): Promise<void> {
   core.setOutput('time', time)
 
   // Output the payload for debugging
-  core.info(`The event payload: ${JSON.stringify(context.payload, null, 2)}`)
+  core.info(`The event payload: ${JSON.stringify(github.context.payload, null, 2)}`)
 }
 
-module.exports = {
-  main,
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function handleError(err: any): void {
+export function handleError(err) {
   // Fail the workflow step if an error occurs
   console.error(err)
   core.setFailed(`Unhandled error: ${err.message}`)

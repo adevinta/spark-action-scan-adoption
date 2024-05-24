@@ -1,5 +1,4 @@
 types
-bin
 dist
 vite.config.ts
 *.cjs

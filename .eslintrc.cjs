@@ -16,14 +16,12 @@ module.exports = {
     },
   ],
   settings: {},
-  parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'simple-import-sort', 'prettier'],
-  extends: ['standard', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
+  plugins: ['simple-import-sort', 'prettier'],
+  extends: ['standard', 'plugin:prettier/recommended'],
   globals: {
     fetch: 'readonly',
   },
   parserOptions: {
-    project: './tsconfig.json',
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
     sourceType: 'module', // Allows for the use of imports
   },
@@ -31,20 +29,6 @@ module.exports = {
     // Overwrite rules specified from the extended configs or add ones
     // Prettier
     'prettier/prettier': [1, { endOfLine: 'auto' }],
-    // Typescript
-    '@typescript-eslint/consistent-type-definitions': [1, 'interface'],
-    '@typescript-eslint/array-type': [2, { default: 'array', readonly: 'array' }],
-    '@typescript-eslint/explicit-module-boundary-types': 0,
-    '@typescript-eslint/prefer-interface': 0,
-    '@typescript-eslint/no-object-literal-type-assertion': 0,
-    '@typescript-eslint/no-shadow': 0,
-    '@typescript-eslint/explicit-function-return-type': 0,
-    '@typescript-eslint/no-unused-vars': [2, { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
-    '@typescript-eslint/no-use-before-define': [
-      2,
-      { functions: false, classes: true, variables: false },
-    ],
-    '@typescript-eslint/switch-exhaustiveness-check': 2,
     // Tailwind
     'tailwindcss/classnames-order': 0,
     // 'tailwindcss/no-custom-classname': [
