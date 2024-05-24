@@ -31,4 +31,4 @@ outputs:
 # Environment
 runs:
   using: 'node20'
-  main: 'bin/index.mjs'
+  main: 'dist/index.mjs'

@@ -3,10 +3,11 @@
   "version": "0.0.1",
   "description": "Detects the adoption of the Spark UI in the codebase and generates a report.",
   "main": "dist/index.js",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "",
+    "build": "npm run clean && ncc build bin/index.mjs -o dist",
+    "clean": "rm -rf dist",
     "commit": "git-cz",
     "prepare": "husky install",
     "lint": "eslint --config .eslintrc.cjs src/**/*.mjs bin/**/*.mjs --cache",
