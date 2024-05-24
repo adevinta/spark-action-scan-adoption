@@ -16,8 +16,11 @@ inputs:
   # Define your inputs here.
   who-to-greet:
     description: Who to greet
-    required: true
+    required: false
     default: World
+  github-token:
+    description: 'GitHub token'
+    required: true
 
 
 # Define your outputs here.
