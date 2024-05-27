@@ -3,6 +3,7 @@ import * as github from '@actions/github'
 import { defaults as defaultGitHubOptions } from '@actions/github/lib/utils.js'
 import { requestLog } from '@octokit/plugin-request-log'
 import { retry } from '@octokit/plugin-retry'
+import chalk from 'chalk'
 
 import { getRetryOptions, parseNumberArray } from './retry-options.mjs'
 
@@ -30,10 +31,10 @@ export async function main() {
 
   const gh = github.getOctokit(token, opts, retry, requestLog)
 
-  console.log(gh) // eslint-disable-line no-console
+  console.log(gh)
 
   const whoToGreet = core.getInput('who-to-greet', { required: true })
-  core.info(`Hello, ${whoToGreet}!`)
+  core.info(chalk.bgYellow.black.bold(`Hello, ${whoToGreet}!`))
 
   // Get the current time and set as an output
   const time = new Date().toTimeString()
