@@ -46,3 +46,6 @@ runs:
       # run: npx @spark-ui/cli-utils scan --config ${{ inputs.configuration }} --token ${{ inputs.github-token }} --debug ${{ inputs.debug }}
       run: 'node ${GITHUB_ACTION_PATH}/dist/index.mjs'
       shell: bash
+      with:
+        github-token: ${{ inputs.github-token }}
+        debug: ${{ inputs.debug }}
