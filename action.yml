@@ -12,7 +12,6 @@ inputs:
   configuration:
     description: 'Configuration file for the script.'
     required: false
-    default: './spark-ui.json'
   # Define your inputs here.
   who-to-greet:
     description: Who to greet
@@ -45,7 +44,7 @@ runs:
     - name: Run script
       # run: npx @spark-ui/cli-utils scan --config ${{ inputs.configuration }} --token ${{ inputs.github-token }} --debug ${{ inputs.debug }}
       run: |
-        echo "Running script with configuration: $CONFIGURATION"
+        echo "Running script with configuration: ${CONFIGURATION}"
         node ${GITHUB_ACTION_PATH}/dist/index.mjs
       shell: bash
       env:
