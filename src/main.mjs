@@ -52,11 +52,7 @@ export async function main() {
     cwd: process.cwd(),
   }
 
-  await exec(
-    'node',
-    ['node_modules/@spark-ui/cli-utils/bin/spark.mjs', 'scan', 'adoption'],
-    options
-  )
+  await exec('npx', ['-p @spark-ui/cli-utils', 'spark', 'scan', 'adoption'], options)
 
   core.info(output)
 
