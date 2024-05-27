@@ -45,7 +45,7 @@ runs:
       # run: npx @spark-ui/cli-utils scan --config ${{ inputs.configuration }} --token ${{ inputs.github-token }} --debug ${{ inputs.debug }}
       run: |
         echo "Running script with configuration: ${CONFIGURATION}"
-        node ${GITHUB_ACTION_PATH}/dist/index.mjs
+        GITHUB_TOKEN=${GITHUB_TOKEN} node ${GITHUB_ACTION_PATH}/dist/index.mjs
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
