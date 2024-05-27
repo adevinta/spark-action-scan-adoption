@@ -34,6 +34,7 @@ export async function main() {
 
   const gh = github.getOctokit(token, opts, retry, requestLog)
 
+  // eslint-disable-next-line no-console
   console.log(gh)
 
   const whoToGreet = core.getInput('who-to-greet', { required: true })
@@ -51,7 +52,11 @@ export async function main() {
     cwd: process.cwd(),
   }
 
-  await exec('spark', ['scan', 'adoption'], options)
+  await exec(
+    'node',
+    ['node_modules/@spark-ui/cli-utils/bin/spark.mjs', 'scan', 'adoption'],
+    options
+  )
 
   core.info(output)
 
