@@ -1,11 +1,14 @@
 import * as core from '@actions/core'
+import { exec } from '@actions/exec'
 import * as github from '@actions/github'
 import { defaults as defaultGitHubOptions } from '@actions/github/lib/utils.js'
 import { requestLog } from '@octokit/plugin-request-log'
 import { retry } from '@octokit/plugin-retry'
-import chalk from 'chalk'
 
 import { getRetryOptions, parseNumberArray } from './retry-options.mjs'
+
+let output = ''
+let error = ''
 
 /**
  * The main function for the action.
@@ -34,18 +37,34 @@ export async function main() {
   console.log(gh)
 
   const whoToGreet = core.getInput('who-to-greet', { required: true })
-  core.info(chalk.bgYellow.black.bold(`Hello, ${whoToGreet}!`))
+  core.info(`Hello, ${whoToGreet}!`)
+
+  const options = {
+    listeners: {
+      stdout: data => {
+        output += data.toString()
+      },
+      stderr: data => {
+        error += data.toString()
+      },
+    },
+    cwd: process.cwd(),
+  }
+
+  await exec('spark', ['scan', 'adoption'], options)
+
+  core.info(output)
 
   // Get the current time and set as an output
-  const time = new Date().toTimeString()
-  core.setOutput('time', time)
+  // const time = new Date().toTimeString()
+  // core.setOutput('time', time)
 
   // Output the payload for debugging
-  core.info(`The event payload: ${JSON.stringify(github.context.payload, null, 2)}`)
+  // core.info(`The event payload: ${JSON.stringify(github.context.payload, null, 2)}`)
 }
 
 export function handleError(err) {
   // Fail the workflow step if an error occurs
-  console.error(err)
+  core.setFailed(`scan error : ${error}`)
   core.setFailed(`Unhandled error: ${err.message}`)
 }
