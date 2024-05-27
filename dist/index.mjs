@@ -33979,6 +33979,11 @@ async function main() {
   const whoToGreet = core.getInput('who-to-greet', { required: true })
   core.info(`Hello, ${whoToGreet}!`)
 
+  // eslint-disable-next-line no-console
+  console.log('debug:', debug)
+  // eslint-disable-next-line no-console
+  console.log('config:', config)
+
   const options = {
     listeners: {
       stdout: data => {
