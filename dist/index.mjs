@@ -33954,7 +33954,8 @@ let error = ''
  */
 async function main() {
   const token = core.getInput('github-token', { required: true })
-  const debug = core.getBooleanInput('debug')
+  const debug = process.env.DEBUG === 'true'
+  const config = process.env.CONFIG
   const userAgent = core.getInput('user-agent')
   const previews = core.getInput('previews')
   const retries = parseInt(core.getInput('retries'))
