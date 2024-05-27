@@ -33990,7 +33990,11 @@ async function main() {
     cwd: process.cwd(),
   }
 
-  await (0,exec.exec)('npx', ['-p @spark-ui/cli-utils', 'spark', 'scan', 'adoption'], options)
+  await (0,exec.exec)(
+    'node',
+    ['node_modules/@spark-ui/cli-utils/bin/spark.mjs', 'scan', 'adoption'],
+    options
+  )
 
   core.info(output)
 
@@ -34004,7 +34008,7 @@ async function main() {
 
 function handleError(err) {
   // Fail the workflow step if an error occurs
-  core.setFailed(`scan error : ${error}`)
+  core.setFailed(`scan error: ${error}`)
   core.setFailed(`Unhandled error: ${err.message}`)
 }
 
