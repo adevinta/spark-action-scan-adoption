@@ -42,7 +42,9 @@ export async function main() {
   // eslint-disable-next-line no-console
   console.log('debug:', debug)
   // eslint-disable-next-line no-console
-  console.log('config:', fileConfiguration)
+  console.log('fileConfiguration:', fileConfiguration)
+  // eslint-disable-next-line no-console
+  console.log('fileOutput:', fileOutput)
 
   const options = {
     listeners: {
@@ -53,12 +55,13 @@ export async function main() {
         error += data.toString()
       },
     },
+    env: {},
     cwd: process.cwd(),
   }
 
   const opts = {
-    config: fileConfiguration ? [] : ['--configuration', fileConfiguration],
-    output: fileOutput ? [] : ['--output', fileOutput],
+    config: fileConfiguration ? ['--configuration', fileConfiguration] : [],
+    output: fileOutput ? ['--output', fileOutput] : [],
   }
 
   await exec(
