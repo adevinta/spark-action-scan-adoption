@@ -12,6 +12,10 @@ inputs:
   configuration:
     description: 'Configuration file for the script.'
     required: false
+  output:
+    description: 'Output file for the script.'
+    required: false
+
   # Define your inputs here.
   who-to-greet:
     description: Who to greet
@@ -51,3 +55,4 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github-token }}
         DEBUG: ${{ inputs.debug }}
         CONFIGURATION: ${{ inputs.configuration }}
+        OUTPUT: ${{ inputs.output }}

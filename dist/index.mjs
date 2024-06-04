@@ -27935,7 +27935,8 @@ let error = ''
 async function main() {
   // const token = process.env.GITHUB_TOKEN
   const debug = process.env.DEBUG === 'true'
-  const configuration = process.env.CONFIGURATION
+  const fileConfiguration = process.env.CONFIGURATION
+  const fileOutput = process.env.OUTPUT
   // const userAgent = core.getInput('user-agent')
   // const previews = core.getInput('previews')
   // const retries = parseInt(core.getInput('retries'))
@@ -27959,7 +27960,7 @@ async function main() {
   // eslint-disable-next-line no-console
   console.log('debug:', debug)
   // eslint-disable-next-line no-console
-  console.log('config:', configuration)
+  console.log('config:', fileConfiguration)
 
   const options = {
     listeners: {
@@ -27973,9 +27974,19 @@ async function main() {
     cwd: process.cwd(),
   }
 
+  const opts = {
+    config: fileConfiguration ? [] : ['--configuration', fileConfiguration],
+    output: fileOutput ? [] : ['--output', fileOutput],
+  }
+
   await (0,exec.exec)(
     'node',
-    ['node_modules/@spark-ui/cli-utils/bin/spark.mjs', 'scan', 'adoption'],
+    [
+      'node_modules/@spark-ui/cli-utils/bin/spark.mjs',
+      'scan',
+      'adoption',
+      ...Object.values(opts).flat(),
+    ],
     options
   )
 
