@@ -16,9 +16,41 @@ let error = ''
  */
 export async function main() {
   // const token = process.env.GITHUB_TOKEN
-  const debug = process.env.DEBUG === 'true'
-  const fileConfiguration = process.env.CONFIGURATION
-  const fileOutput = process.env.OUTPUT
+  const {
+    DEBUG,
+    CONFIGURATION,
+    OUTPUT,
+    VERBOSE,
+    DETAILS,
+    SORT,
+    DIRECTORY,
+    EXTENSIONS,
+    IMPORTS,
+    DATADOG_TAG_KEY,
+  } = process.env
+  const {
+    debug,
+    fileConfiguration,
+    fileOutput,
+    verbose,
+    details,
+    directory,
+    sort,
+    extensions,
+    imports,
+    datadogTagKey,
+  } = {
+    debug: DEBUG === 'true',
+    fileConfiguration: CONFIGURATION,
+    fileOutput: OUTPUT,
+    verbose: VERBOSE === 'true',
+    details: DETAILS === 'true',
+    sort: SORT,
+    directory: DIRECTORY,
+    extensions: EXTENSIONS,
+    imports: IMPORTS,
+    datadogTagKey: DATADOG_TAG_KEY,
+  }
   // const userAgent = core.getInput('user-agent')
   // const previews = core.getInput('previews')
   // const retries = parseInt(core.getInput('retries'))
@@ -45,6 +77,20 @@ export async function main() {
   console.log('fileConfiguration:', fileConfiguration)
   // eslint-disable-next-line no-console
   console.log('fileOutput:', fileOutput)
+  // eslint-disable-next-line no-console
+  console.log('verbose:', verbose)
+  // eslint-disable-next-line no-console
+  console.log('details:', details)
+  // eslint-disable-next-line no-console
+  console.log('directory:', directory)
+  // eslint-disable-next-line no-console
+  console.log('sort:', sort)
+  // eslint-disable-next-line no-console
+  console.log('extensions:', extensions)
+  // eslint-disable-next-line no-console
+  console.log('imports:', imports)
+  // eslint-disable-next-line no-console
+  console.log('datadogTagKey:', datadogTagKey)
 
   const options = {
     listeners: {
@@ -62,6 +108,7 @@ export async function main() {
   const opts = {
     config: fileConfiguration ? ['--configuration', fileConfiguration] : [],
     output: fileOutput ? ['--output', fileOutput] : [],
+    verbose: verbose ? ['--verbose'] : [],
   }
 
   await exec(

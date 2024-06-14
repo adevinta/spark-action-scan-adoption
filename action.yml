@@ -15,18 +15,33 @@ inputs:
   output:
     description: 'Output file for the script.'
     required: false
-
-  # Define your inputs here.
-  who-to-greet:
-    description: Who to greet
+  verbose:
+    description: 'Whether to tell the GitHub client to log details of its requests. true or false. Default is to run in debug mode when the GitHub Actions step debug logging is turned on.'
     required: false
-    default: World
   github-token:
     description: 'GitHub token'
     required: true
   debug:
     description: Whether to tell the GitHub client to log details of its requests. true or false. Default is to run in debug mode when the GitHub Actions step debug logging is turned on.
     default: ${{ runner.debug == '1' }}
+  details:
+    description: 'Whether to include detailed information in the report. true or false. Default is false.'
+    required: false
+  sort:
+    description: 'Whether to sort the report by the number of occurrences of the Spark UI. count or alphabetical. Default is count.'
+    required: false
+  directory:
+    description: 'Directory to scan.'
+    required: false
+  extensions:
+    description: 'Extensions to scan.'
+    required: false
+  imports:
+    description: 'Import patterns to scan.'
+    required: false
+  datadog-tag-key:
+    description: 'Datadog Tag Key.'
+    required: false
 
 
 # Define your outputs here.
@@ -56,3 +71,10 @@ runs:
         DEBUG: ${{ inputs.debug }}
         CONFIGURATION: ${{ inputs.configuration }}
         OUTPUT: ${{ inputs.output }}
+        VERBOSE: ${{ inputs.verbose }}
+        DETAILS: ${{ inputs.details }}
+        SORT: ${{ inputs.sort }}
+        DIRECTORY: ${{ inputs.directory }}
+        EXTENSIONS: ${{ inputs.extensions }}
+        IMPORTS: ${{ inputs.imports }}
+        DATADOG_TAG_KEY: ${{ secrets.datadog_tag_key }}
