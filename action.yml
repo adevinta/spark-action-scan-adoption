@@ -77,4 +77,4 @@ runs:
         DIRECTORY: ${{ inputs.directory }}
         EXTENSIONS: ${{ inputs.extensions }}
         IMPORTS: ${{ inputs.imports }}
-        DATADOG_TAG_KEY: ${{ secrets.datadog-tag-key }}
+        DATADOG_TAG_KEY: ${{ inputs.datadog-tag-key }}
