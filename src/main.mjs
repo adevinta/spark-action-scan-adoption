@@ -116,6 +116,8 @@ export async function main() {
     imports: imports ? ['--imports', imports] : [],
   }
 
+  console.log(JSON.stringify(opts, null, 2))
+
   await exec(
     'node',
     [
