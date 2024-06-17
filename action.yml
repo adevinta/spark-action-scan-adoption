@@ -42,6 +42,7 @@ inputs:
   datadog-tag-key:
     description: 'Datadog Tag Key.'
     required: false
+    
 
 
 # Define your outputs here.
