@@ -47,8 +47,8 @@ export async function main() {
     details: DETAILS === 'true',
     sort: SORT,
     directory: DIRECTORY,
-    extensions: EXTENSIONS ? EXTENSIONS.split(',') : [],
-    imports: IMPORTS ? IMPORTS.split(',') : [],
+    extensions: EXTENSIONS,
+    imports: IMPORTS,
     datadogTagKey: DATADOG_TAG_KEY,
   }
   // const userAgent = core.getInput('user-agent')
@@ -109,6 +109,11 @@ export async function main() {
     config: fileConfiguration ? ['--configuration', fileConfiguration] : [],
     output: fileOutput ? ['--output', fileOutput] : [],
     verbose: verbose ? ['--verbose'] : [],
+    details: details ? ['--details'] : [],
+    directory: directory ? ['--directory', directory] : [],
+    sort: sort ? ['--sort', sort] : [],
+    extensions: extensions ? ['--extensions', extensions] : [],
+    imports: imports ? ['--imports', imports] : [],
   }
 
   await exec(
@@ -122,6 +127,7 @@ export async function main() {
     options
   )
 
+  core.info('------------------')
   core.info(output)
 
   // Get the current time and set as an output
@@ -130,6 +136,10 @@ export async function main() {
 
   // Output the payload for debugging
   // core.info(`The event payload: ${JSON.stringify(github.context.payload, null, 2)}`)
+
+  if (datadogTagKey) {
+    core.info(`datadog-tag-key: ${datadogTagKey}`)
+  }
 }
 
 export function handleError(err) {
