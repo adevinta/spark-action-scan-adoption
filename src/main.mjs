@@ -7,7 +7,7 @@ import { exec } from '@actions/exec'
 
 // import { getRetryOptions, parseNumberArray } from './retry-options.mjs'
 
-let output = ''
+// let output = ''
 let error = ''
 
 /**
@@ -95,7 +95,7 @@ export async function main() {
   const options = {
     listeners: {
       stdout: data => {
-        output += data.toString()
+        // output += data.toString()
       },
       stderr: data => {
         error += data.toString()
@@ -128,7 +128,7 @@ export async function main() {
   )
 
   core.info('------------------')
-  core.info(output)
+  // core.info(output)
 
   // Get the current time and set as an output
   // const time = new Date().toTimeString()

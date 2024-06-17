@@ -27925,7 +27925,7 @@ var exec = __nccwpck_require__(1514);
 
 // import { getRetryOptions, parseNumberArray } from './retry-options.mjs'
 
-let output = ''
+// let output = ''
 let error = ''
 
 /**
@@ -28013,7 +28013,7 @@ async function main() {
   const options = {
     listeners: {
       stdout: data => {
-        output += data.toString()
+        // output += data.toString()
       },
       stderr: data => {
         error += data.toString()
@@ -28046,7 +28046,7 @@ async function main() {
   )
 
   core.info('------------------')
-  core.info(output)
+  // core.info(output)
 
   // Get the current time and set as an output
   // const time = new Date().toTimeString()
@@ -28055,7 +28055,7 @@ async function main() {
   // Output the payload for debugging
   // core.info(`The event payload: ${JSON.stringify(github.context.payload, null, 2)}`)
 
-  if(datadogTagKey) {
+  if (datadogTagKey) {
     core.info(`datadog-tag-key: ${datadogTagKey}`)
   }
 }
