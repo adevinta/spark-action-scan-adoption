@@ -27965,8 +27965,8 @@ async function main() {
     details: DETAILS === 'true',
     sort: SORT,
     directory: DIRECTORY,
-    extensions: EXTENSIONS,
-    imports: IMPORTS,
+    extensions: EXTENSIONS ? EXTENSIONS.split(',') : [],
+    imports: IMPORTS ? IMPORTS.split(',') : [],
     datadogTagKey: DATADOG_TAG_KEY,
   }
   // const userAgent = core.getInput('user-agent')
