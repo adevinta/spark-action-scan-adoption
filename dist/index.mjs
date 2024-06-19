@@ -26046,14 +26046,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 3217:
-/***/ ((module) => {
-
-module.exports = eval("require")("./api");
-
-
-/***/ }),
-
 /***/ 9491:
 /***/ ((module) => {
 
@@ -28589,26 +28581,84 @@ const chalkStderr = createChalk({level: stderrColor ? stderrColor.level : 0});
 
 
 // eslint-disable-next-line no-console
-const log = new Proxy(console.log, {
-  // eslint-disable-next-line no-console
-  success: (...args) => console.log(source.green('🎉 ', ...args)),
-  // eslint-disable-next-line no-console
-  error: (...args) => console.log(source.red('💥 ', ...args)),
-  // eslint-disable-next-line no-console
-  warn: (...args) => console.log(source.yellow('⚠️ ', ...args)),
-  // eslint-disable-next-line no-console
-  info: (...args) => console.log(source.cyan('ℹ️ ', ...args)),
-})
+const log = console.log
 
-// EXTERNAL MODULE: ./node_modules/@vercel/ncc/dist/ncc/@@notfound.js?./api
-var _notfoundapi = __nccwpck_require__(3217);
+// eslint-disable-next-line no-console
+log.success = (...args) => console.log(source.green('🎉 ', ...args))
+// eslint-disable-next-line no-console
+log.error = (...args) => console.log(source.red('💥 ', ...args))
+// eslint-disable-next-line no-console
+log.warn = (...args) => console.log(source.yellow('⚠️ ', ...args))
+// eslint-disable-next-line no-console
+log.info = (...args) => console.log(source.cyan('ℹ️ ', ...args))
+
+;// CONCATENATED MODULE: ./src/api/configuration.mjs
+const API_PROTOCOL = 'https'
+const API_HOST = 'echo.zuplo.io'
+
+// Prod: ms-common--metrics.es-global-pro.schip.io
+// Local: ms-common--metrics.es-global-pro.heimdall.schip.io
+
+const API_DASHBOARD_NAME = 'metrics.frontend.spark'
+const API_ID = process.env.GITHUB_REPOSITORY_ID
+const API_DASHBOARD_TAG_SET_ID = 'global.metrics.frontend.spark.scan.adoption'
+
+;// CONCATENATED MODULE: ./src/api/ci-metrics.mjs
+
+
+const PATHNAME = 'ci-metrics'
+
+const create = async ({
+  name = API_DASHBOARD_NAME,
+  id = API_ID,
+  organisationName,
+  tags = [],
+  tagSet = API_DASHBOARD_TAG_SET_ID,
+}) => {
+  return await fetch(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name,
+      id,
+      organisationName,
+      tags: tags.map(tag => ({
+        tagSetId: API_DASHBOARD_TAG_SET_ID,
+        ...tag,
+      })),
+    }),
+  })
+}
+
+;// CONCATENATED MODULE: ./src/api/health.mjs
+
+
+const health_PATHNAME = 'health'
+
+const read = async () => {
+  return await fetch(`${API_PROTOCOL}://${API_HOST}/${health_PATHNAME}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+;// CONCATENATED MODULE: ./src/api/index.mjs
+
+
+
+
+
 ;// CONCATENATED MODULE: ./src/sendMetrics.mjs
 
 
 
 const sendMetrics = async ({ data, organisationName }) => {
   try {
-    const response = await _notfoundapi.health.read()
+    const response = await read()
     log.info('Metrics service alive')
     log.info(JSON.stringify(response, null, 2))
   } catch (e) {
@@ -28618,7 +28668,8 @@ const sendMetrics = async ({ data, organisationName }) => {
   }
 
   try {
-    const response = await _notfoundapi.ciMetrics.create({
+    const response = await create({
+      organisationName,
       tags: data.map(([key, values]) => {
         return {
           suffixName: key,
@@ -28646,7 +28697,7 @@ const sendMetrics = async ({ data, organisationName }) => {
 // let output = ''
 let error = ''
 const fileOutput = './.spark-ui.adoption.json'
-let data = ''
+const data = ''
 
 /**
  * The main function for the action.

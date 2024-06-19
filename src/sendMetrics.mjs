@@ -1,4 +1,4 @@
-import { ciMetrics, health } from './api'
+import { ciMetrics, health } from './api/index.mjs'
 import { log } from './log.mjs'
 
 export const sendMetrics = async ({ data, organisationName }) => {
@@ -14,6 +14,7 @@ export const sendMetrics = async ({ data, organisationName }) => {
 
   try {
     const response = await ciMetrics.create({
+      organisationName,
       tags: data.map(([key, values]) => {
         return {
           suffixName: key,
