@@ -28678,14 +28678,15 @@ const sendMetrics = async ({ data, organisationName }) => {
       }),
     })
     log.sucess('Metrics sent')
-    const json = response.json()
+    const json = await response.json()
     log.info(JSON.stringify(json, null, 2))
     log.sucess('Metrics parsed')
+    log.info('CI Metrics service alive')
+    return json
   } catch (e) {
     log.error('Metrics service error')
-  } finally {
-    log.info('CI Metrics service alive')
   }
+  return {}
 }
 
 ;// CONCATENATED MODULE: ./src/main.mjs
