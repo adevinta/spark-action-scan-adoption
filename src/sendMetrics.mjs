@@ -16,22 +16,22 @@ export const sendMetrics = async ({ data, organisationName }) => {
   try {
     const promise = await ciMetrics.create({
       organisationName,
-      tags: data.map(([key, values]) => {
+      tags: Object.entries(data).map(([key, values]) => {
         return {
           suffixName: key,
           content: values.importsCount,
         }
       }),
     })
-    log.sucess('Metrics sent')
+    log.success('Metrics sent')
     const response = await promise.json()
     log.info(JSON.stringify(response, null, 2))
-    log.sucess('Metrics parsed')
-    log.info('CI Metrics service alive')
+    log.success('Metrics parsed')
+    log.success('CI Metrics service sent')
 
     return response
   } catch (e) {
-    log.error('Metrics service error')
+    log.error('Metrics service error', e)
   }
 
   return {}

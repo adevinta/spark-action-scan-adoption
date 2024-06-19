@@ -28608,7 +28608,6 @@ const API_DASHBOARD_TAG_SET_ID = 'global.metrics.frontend.spark.scan.adoption'
 ;// CONCATENATED MODULE: ./src/api/ci-metrics.mjs
 
 
-
 const PATHNAME = 'ci-metrics'
 
 const create = async ({
@@ -28618,7 +28617,7 @@ const create = async ({
   tags = [],
   tagSet = API_DASHBOARD_TAG_SET_ID,
 }) => {
-  log.info(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, JSON.stringify(tags, null, 2))
+  // log.info(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, JSON.stringify(tags, null, 2))
 
   return await fetch(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, {
     method: 'POST',
@@ -28626,15 +28625,19 @@ const create = async ({
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/json; charset=utf-8',
     },
-    body: {
-      name,
-      id,
-      organisationName,
-      tags: tags.map(tag => ({
-        tagSetId: API_DASHBOARD_TAG_SET_ID,
-        ...tag,
-      })),
-    },
+    body: JSON.stringify(
+      {
+        name,
+        id,
+        organisationName,
+        tags: tags.map(tag => ({
+          tagSetId: API_DASHBOARD_TAG_SET_ID,
+          ...tag,
+        })),
+      },
+      null,
+      2
+    ),
   })
 }
 
@@ -28677,22 +28680,22 @@ const sendMetrics = async ({ data, organisationName }) => {
   try {
     const promise = await create({
       organisationName,
-      tags: data.map(([key, values]) => {
+      tags: Object.entries(data).map(([key, values]) => {
         return {
           suffixName: key,
           content: values.importsCount,
         }
       }),
     })
-    log.sucess('Metrics sent')
+    log.success('Metrics sent')
     const response = await promise.json()
     log.info(JSON.stringify(response, null, 2))
-    log.sucess('Metrics parsed')
-    log.info('CI Metrics service alive')
+    log.success('Metrics parsed')
+    log.success('CI Metrics service sent')
 
     return response
   } catch (e) {
-    log.error('Metrics service error')
+    log.error('Metrics service error', e)
   }
 
   return {}
@@ -28712,7 +28715,6 @@ const sendMetrics = async ({ data, organisationName }) => {
 // let output = ''
 let error = ''
 const fileOutput = './.spark-ui.adoption.json'
-const data = ''
 
 /**
  * The main function for the action.
@@ -28816,15 +28818,18 @@ async function main() {
   if (datadogMetrics) {
     let fileContent
     try {
-      fileContent = (0,external_fs_.readFileSync)(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput), 'utf8')
-      log.info(JSON.stringify(data, null, 2))
+      fileContent = (0,external_fs_.readFileSync)(__nccwpck_require__.ab + ".spark-ui.adoption.json", 'utf8')
+      fileContent = JSON.parse(fileContent)
     } catch (err) {
       log.error('Error reading file:', err)
     }
 
-    core.info(`datadog-organisationName: ${datadogOrganisationName}`)
     try {
-      await sendMetrics({ data: fileContent, organisationName: datadogOrganisationName })
+      if (Object.keys(fileContent).length > 0) {
+        await sendMetrics({ data: fileContent, organisationName: datadogOrganisationName })
+      } else {
+        log.warn('No data to send to Datadog')
+      }
     } catch (error) {
       handleError(error)
     }

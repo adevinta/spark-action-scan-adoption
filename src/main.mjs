@@ -11,7 +11,6 @@ import { sendMetrics } from './sendMetrics.mjs'
 // let output = ''
 let error = ''
 const fileOutput = './.spark-ui.adoption.json'
-const data = ''
 
 /**
  * The main function for the action.
@@ -116,14 +115,17 @@ export async function main() {
     let fileContent
     try {
       fileContent = readFileSync(path.join(process.cwd(), fileOutput), 'utf8')
-      log.info(JSON.stringify(data, null, 2))
+      fileContent = JSON.parse(fileContent)
     } catch (err) {
       log.error('Error reading file:', err)
     }
 
-    core.info(`datadog-organisationName: ${datadogOrganisationName}`)
     try {
-      await sendMetrics({ data: fileContent, organisationName: datadogOrganisationName })
+      if (Object.keys(fileContent).length > 0) {
+        await sendMetrics({ data: fileContent, organisationName: datadogOrganisationName })
+      } else {
+        log.warn('No data to send to Datadog')
+      }
     } catch (error) {
       handleError(error)
     }
