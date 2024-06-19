@@ -3,8 +3,9 @@ import { log } from './log.mjs'
 
 export const sendMetrics = async ({ data, organisationName }) => {
   try {
-    const response = await health.read()
+    const promise = await health.read()
     log.info('Metrics service alive')
+    const response = await promise.json()
     log.info(JSON.stringify(response, null, 2))
   } catch (e) {
     log.error('Metrics service error')
@@ -13,7 +14,7 @@ export const sendMetrics = async ({ data, organisationName }) => {
   }
 
   try {
-    const response = await ciMetrics.create({
+    const promise = await ciMetrics.create({
       organisationName,
       tags: data.map(([key, values]) => {
         return {
@@ -23,12 +24,12 @@ export const sendMetrics = async ({ data, organisationName }) => {
       }),
     })
     log.sucess('Metrics sent')
-    const json = await response.json()
-    log.info(JSON.stringify(json, null, 2))
+    const response = await promise.json()
+    log.info(JSON.stringify(response, null, 2))
     log.sucess('Metrics parsed')
     log.info('CI Metrics service alive')
 
-    return json
+    return response
   } catch (e) {
     log.error('Metrics service error')
   }

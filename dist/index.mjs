@@ -28658,8 +28658,9 @@ const read = async () => {
 
 const sendMetrics = async ({ data, organisationName }) => {
   try {
-    const response = await read()
+    const promise = await read()
     log.info('Metrics service alive')
+    const response = await promise.json()
     log.info(JSON.stringify(response, null, 2))
   } catch (e) {
     log.error('Metrics service error')
@@ -28668,7 +28669,7 @@ const sendMetrics = async ({ data, organisationName }) => {
   }
 
   try {
-    const response = await create({
+    const promise = await create({
       organisationName,
       tags: data.map(([key, values]) => {
         return {
@@ -28678,14 +28679,16 @@ const sendMetrics = async ({ data, organisationName }) => {
       }),
     })
     log.sucess('Metrics sent')
-    const json = await response.json()
-    log.info(JSON.stringify(json, null, 2))
+    const response = await promise.json()
+    log.info(JSON.stringify(response, null, 2))
     log.sucess('Metrics parsed')
     log.info('CI Metrics service alive')
-    return json
+
+    return response
   } catch (e) {
     log.error('Metrics service error')
   }
+
   return {}
 }
 
@@ -28737,8 +28740,8 @@ async function main() {
     details: DETAILS === 'true',
     sort: SORT,
     directory: DIRECTORY,
-    extensions: EXTENSIONS ? EXTENSIONS.split(',') : [],
-    imports: IMPORTS ? IMPORTS.split(',') : [],
+    extensions: EXTENSIONS ? EXTENSIONS.split(',') : null,
+    imports: IMPORTS ? IMPORTS.split(',') : null,
     datadogMetrics: DATADOG_METRICS === 'true',
     datadogOrganisationName: DATADOG_ORGANISATION_NAME,
   }

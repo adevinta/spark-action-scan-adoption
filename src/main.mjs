@@ -45,8 +45,8 @@ export async function main() {
     details: DETAILS === 'true',
     sort: SORT,
     directory: DIRECTORY,
-    extensions: EXTENSIONS ? EXTENSIONS.split(',') : [],
-    imports: IMPORTS ? IMPORTS.split(',') : [],
+    extensions: EXTENSIONS ? EXTENSIONS.split(',') : null,
+    imports: IMPORTS ? IMPORTS.split(',') : null,
     datadogMetrics: DATADOG_METRICS === 'true',
     datadogOrganisationName: DATADOG_ORGANISATION_NAME,
   }
