@@ -28618,9 +28618,10 @@ const create = async ({
   return await fetch(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json; charset=utf-8'
     },
-    body: JSON.stringify({
+    body: {
       name,
       id,
       organisationName,
@@ -28628,7 +28629,7 @@ const create = async ({
         tagSetId: API_DASHBOARD_TAG_SET_ID,
         ...tag,
       })),
-    }),
+    },
   })
 }
 
