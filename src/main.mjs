@@ -113,8 +113,9 @@ export async function main() {
   )
 
   if (datadogMetrics) {
+    let fileContent
     try {
-      const data = readFileSync(path.join(process.cwd(), fileOutput), 'utf8')
+      fileContent = readFileSync(path.join(process.cwd(), fileOutput), 'utf8')
       log.info(JSON.stringify(data, null, 2))
     } catch (err) {
       log.error('Error reading file:', err)
@@ -122,7 +123,7 @@ export async function main() {
 
     core.info(`datadog-organisationName: ${datadogOrganisationName}`)
     try {
-      await sendMetrics({ data, organisationName: datadogOrganisationName })
+      await sendMetrics({ data: fileContent, organisationName: datadogOrganisationName })
     } catch (error) {
       handleError(error)
     }

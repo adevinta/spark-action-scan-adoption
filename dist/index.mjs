@@ -28814,8 +28814,9 @@ async function main() {
   )
 
   if (datadogMetrics) {
+    let fileContent
     try {
-      const data = (0,external_fs_.readFileSync)(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput), 'utf8')
+      fileContent = (0,external_fs_.readFileSync)(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput), 'utf8')
       log.info(JSON.stringify(data, null, 2))
     } catch (err) {
       log.error('Error reading file:', err)
@@ -28823,7 +28824,7 @@ async function main() {
 
     core.info(`datadog-organisationName: ${datadogOrganisationName}`)
     try {
-      await sendMetrics({ data, organisationName: datadogOrganisationName })
+      await sendMetrics({ data: fileContent, organisationName: datadogOrganisationName })
     } catch (error) {
       handleError(error)
     }
