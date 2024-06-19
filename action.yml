@@ -39,10 +39,14 @@ inputs:
   imports:
     description: 'Import patterns to scan.'
     required: false
-  datadog-tag-key:
-    description: 'Datadog Tag Key.'
+  datadog-metrics:
+    description: 'Datadog'
+    required: true
+    default: 'false'
+  organisation-name:
+    description: 'Datadog Organisation name'
     required: false
-    
+
 
 
 # Define your outputs here.
@@ -71,11 +75,11 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github-token }}
         DEBUG: ${{ inputs.debug }}
         CONFIGURATION: ${{ inputs.configuration }}
-        OUTPUT: ${{ inputs.output }}
         VERBOSE: ${{ inputs.verbose }}
         DETAILS: ${{ inputs.details }}
         SORT: ${{ inputs.sort }}
         DIRECTORY: ${{ inputs.directory }}
         EXTENSIONS: ${{ inputs.extensions }}
         IMPORTS: ${{ inputs.imports }}
-        DATADOG_TAG_KEY: ${{ inputs.datadog-tag-key }}
+        DATADOG_METRICS: ${{ inputs.datadog-metrics }}
+        DATADOG_ORGANISATION_NAME: ${{ inputs.organisation-name }}

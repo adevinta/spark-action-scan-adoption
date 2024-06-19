@@ -1,82 +1,60 @@
 import * as core from '@actions/core'
 import { exec } from '@actions/exec'
-// import * as github from '@actions/github'
-// import { defaults as defaultGitHubOptions } from '@actions/github/lib/utils.js'
-// import { requestLog } from '@octokit/plugin-request-log'
-// import { retry } from '@octokit/plugin-retry'
+import { readFileSync } from 'fs'
 
-// import { getRetryOptions, parseNumberArray } from './retry-options.mjs'
+import { log } from './log.mjs'
+import { sendMetrics } from './sendMetrics.mjs'
 
 // let output = ''
 let error = ''
+const fileOutput = './.spark-ui.adoption.json'
+const data = ''
 
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 export async function main() {
-  // const token = process.env.GITHUB_TOKEN
   const {
     DEBUG,
     CONFIGURATION,
-    OUTPUT,
     VERBOSE,
     DETAILS,
     SORT,
     DIRECTORY,
     EXTENSIONS,
     IMPORTS,
-    DATADOG_TAG_KEY,
+    DATADOG_METRICS,
+    DATADOG_ORGANISATION_NAME,
   } = process.env
   const {
     debug,
     fileConfiguration,
-    fileOutput,
     verbose,
     details,
     directory,
     sort,
     extensions,
     imports,
-    datadogTagKey,
+    datadogMetrics,
+    datadogOrganisationName,
   } = {
     debug: DEBUG === 'true',
     fileConfiguration: CONFIGURATION,
-    fileOutput: OUTPUT,
     verbose: VERBOSE === 'true',
     details: DETAILS === 'true',
     sort: SORT,
     directory: DIRECTORY,
     extensions: EXTENSIONS ? EXTENSIONS.split(',') : [],
     imports: IMPORTS ? IMPORTS.split(',') : [],
-    datadogTagKey: DATADOG_TAG_KEY,
+    datadogMetrics: DATADOG_METRICS === 'true',
+    datadogOrganisationName: DATADOG_ORGANISATION_NAME,
   }
-  // const userAgent = core.getInput('user-agent')
-  // const previews = core.getInput('previews')
-  // const retries = parseInt(core.getInput('retries'))
-  // const exemptStatusCodes = parseNumberArray(core.getInput('retry-exempt-status-codes'))
-
-  // const [retryOpts, requestOpts] = getRetryOptions(retries, exemptStatusCodes, defaultGitHubOptions)
-  //
-  // const opts = {
-  //   log: debug ? console : undefined,
-  //   userAgent: userAgent || undefined,
-  //   previews: previews ? previews.split(',') : undefined,
-  //   retry: retryOpts,
-  //   request: requestOpts,
-  // }
-  //
-  // const gh = github.getOctokit(token, opts, retry, requestLog)
-  //
-  // // eslint-disable-next-line no-console
-  // console.log(gh)
 
   // eslint-disable-next-line no-console
   console.log('debug:', debug)
   // eslint-disable-next-line no-console
   console.log('fileConfiguration:', fileConfiguration)
-  // eslint-disable-next-line no-console
-  console.log('fileOutput:', fileOutput)
   // eslint-disable-next-line no-console
   console.log('verbose:', verbose)
   // eslint-disable-next-line no-console
@@ -90,7 +68,9 @@ export async function main() {
   // eslint-disable-next-line no-console
   console.log('imports:', imports)
   // eslint-disable-next-line no-console
-  console.log('datadogTagKey:', datadogTagKey)
+  console.log('datadogMetrics:', datadogMetrics)
+  // eslint-disable-next-line no-console
+  console.log('datadogOrganisationName:', datadogOrganisationName)
 
   const options = {
     listeners: {
@@ -107,7 +87,7 @@ export async function main() {
 
   const opts = {
     config: fileConfiguration ? ['--configuration', fileConfiguration] : [],
-    output: fileOutput ? ['--output', fileOutput] : [],
+    output: ['--output', fileOutput],
     verbose: verbose ? ['--verbose'] : [],
     details: details ? ['--details'] : [],
     directory: directory ? ['--directory', directory] : [],
@@ -116,7 +96,14 @@ export async function main() {
     imports: imports ? ['--imports', imports] : [],
   }
 
-  console.log(JSON.stringify(opts, null, 2))
+  log(JSON.stringify(opts, null, 2))
+
+  try {
+    const data = readFileSync(fileOutput, 'utf8')
+    log.info(JSON.stringify(data, null, 2))
+  } catch (err) {
+    log.error('Error reading file:', err)
+  }
 
   await exec(
     'node',
@@ -129,18 +116,13 @@ export async function main() {
     options
   )
 
-  core.info('------------------')
-  // core.info(output)
-
-  // Get the current time and set as an output
-  // const time = new Date().toTimeString()
-  // core.setOutput('time', time)
-
-  // Output the payload for debugging
-  // core.info(`The event payload: ${JSON.stringify(github.context.payload, null, 2)}`)
-
-  if (datadogTagKey) {
-    core.info(`datadog-tag-key: ${datadogTagKey}`)
+  if (datadogMetrics) {
+    core.info(`datadog-organisationName: ${datadogOrganisationName}`)
+    try {
+      await sendMetrics({ data, organisationName: datadogOrganisationName })
+    } catch (error) {
+      handleError(error)
+    }
   }
 }
 
