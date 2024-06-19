@@ -27911,14 +27911,14 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 
+;// CONCATENATED MODULE: external "node:process"
+const external_node_process_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:process");
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2186);
 // EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
 var exec = __nccwpck_require__(1514);
 // EXTERNAL MODULE: external "fs"
 var external_fs_ = __nccwpck_require__(7147);
-;// CONCATENATED MODULE: external "node:process"
-const external_node_process_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:process");
 // EXTERNAL MODULE: external "path"
 var external_path_ = __nccwpck_require__(1017);
 ;// CONCATENATED MODULE: ./node_modules/chalk/source/vendor/ansi-styles/index.js
@@ -28708,6 +28708,7 @@ const sendMetrics = async ({ data, organisationName }) => {
 
 
 
+
 // let output = ''
 let error = ''
 const fileOutput = './.spark-ui.adoption.json'
@@ -28801,13 +28802,6 @@ async function main() {
 
   log(JSON.stringify(opts, null, 2))
 
-  try {
-    const data = (0,external_fs_.readFileSync)(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput), 'utf8')
-    log.info(JSON.stringify(data, null, 2))
-  } catch (err) {
-    log.error('Error reading file:', err)
-  }
-
   await (0,exec.exec)(
     'node',
     [
@@ -28820,6 +28814,13 @@ async function main() {
   )
 
   if (datadogMetrics) {
+    try {
+      const data = (0,external_fs_.readFileSync)(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput), 'utf8')
+      log.info(JSON.stringify(data, null, 2))
+    } catch (err) {
+      log.error('Error reading file:', err)
+    }
+
     core.info(`datadog-organisationName: ${datadogOrganisationName}`)
     try {
       await sendMetrics({ data, organisationName: datadogOrganisationName })
