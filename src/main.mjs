@@ -1,6 +1,9 @@
+import process from 'node:process'
+
 import * as core from '@actions/core'
 import { exec } from '@actions/exec'
 import { readFileSync } from 'fs'
+import path from 'path'
 
 import { log } from './log.mjs'
 import { sendMetrics } from './sendMetrics.mjs'
@@ -99,7 +102,7 @@ export async function main() {
   log(JSON.stringify(opts, null, 2))
 
   try {
-    const data = readFileSync(fileOutput, 'utf8')
+    const data = readFileSync(path.join(process.cwd(), fileOutput), 'utf8')
     log.info(JSON.stringify(data, null, 2))
   } catch (err) {
     log.error('Error reading file:', err)

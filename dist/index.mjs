@@ -27917,6 +27917,10 @@ var core = __nccwpck_require__(2186);
 var exec = __nccwpck_require__(1514);
 // EXTERNAL MODULE: external "fs"
 var external_fs_ = __nccwpck_require__(7147);
+;// CONCATENATED MODULE: external "node:process"
+const external_node_process_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:process");
+// EXTERNAL MODULE: external "path"
+var external_path_ = __nccwpck_require__(1017);
 ;// CONCATENATED MODULE: ./node_modules/chalk/source/vendor/ansi-styles/index.js
 const ANSI_BACKGROUND_OFFSET = 10;
 
@@ -28142,8 +28146,6 @@ const ansiStyles = assembleStyles();
 
 /* harmony default export */ const ansi_styles = (ansiStyles);
 
-;// CONCATENATED MODULE: external "node:process"
-const external_node_process_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:process");
 ;// CONCATENATED MODULE: external "node:os"
 const external_node_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:os");
 ;// CONCATENATED MODULE: external "node:tty"
@@ -28617,6 +28619,7 @@ const create = async ({
   tagSet = API_DASHBOARD_TAG_SET_ID,
 }) => {
   log.info(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, JSON.stringify(tags, null, 2))
+
   return await fetch(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, {
     method: 'POST',
     headers: {
@@ -28703,6 +28706,8 @@ const sendMetrics = async ({ data, organisationName }) => {
 
 
 
+
+
 // let output = ''
 let error = ''
 const fileOutput = './.spark-ui.adoption.json'
@@ -28724,7 +28729,7 @@ async function main() {
     IMPORTS,
     DATADOG_METRICS,
     DATADOG_ORGANISATION_NAME,
-  } = process.env
+  } = external_node_process_namespaceObject.env
   const {
     debug,
     fileConfiguration,
@@ -28780,7 +28785,7 @@ async function main() {
       },
     },
     env: {},
-    cwd: process.cwd(),
+    cwd: external_node_process_namespaceObject.cwd(),
   }
 
   const opts = {
@@ -28797,7 +28802,7 @@ async function main() {
   log(JSON.stringify(opts, null, 2))
 
   try {
-    const data = (0,external_fs_.readFileSync)(fileOutput, 'utf8')
+    const data = (0,external_fs_.readFileSync)(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput), 'utf8')
     log.info(JSON.stringify(data, null, 2))
   } catch (err) {
     log.error('Error reading file:', err)
