@@ -28606,6 +28606,7 @@ const API_DASHBOARD_TAG_SET_ID = 'global.metrics.frontend.spark.scan.adoption'
 ;// CONCATENATED MODULE: ./src/api/ci-metrics.mjs
 
 
+
 const PATHNAME = 'ci-metrics'
 
 const create = async ({
@@ -28615,11 +28616,12 @@ const create = async ({
   tags = [],
   tagSet = API_DASHBOARD_TAG_SET_ID,
 }) => {
+  log.info(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, JSON.stringify(tags, null, 2))
   return await fetch(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json; charset=utf-8'
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json; charset=utf-8',
     },
     body: {
       name,
