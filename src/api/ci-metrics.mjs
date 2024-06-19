@@ -17,7 +17,7 @@ export const create = async ({
 }) => {
   // log.info(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, JSON.stringify(tags, null, 2))
 
-  return await fetch(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, {
+  return await fetch(`${API_PROTOCOL}://${API_HOST.PRO}/${PATHNAME}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json, text/plain, */*',

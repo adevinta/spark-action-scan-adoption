@@ -28596,10 +28596,13 @@ log.info = (...args) => console.log(source.cyan('ℹ️ ', ...args))
 
 ;// CONCATENATED MODULE: ./src/api/configuration.mjs
 const API_PROTOCOL = 'https'
-const API_HOST = 'echo.zuplo.io'
+const ECHO_API_HOST = 'echo.zuplo.io'
 
-// Prod: ms-common--metrics.es-global-pro.schip.io
-// Local: ms-common--metrics.es-global-pro.heimdall.schip.io
+const API_HOST = {
+  PRO: 'ms-common--metrics.es-global-pro.schip.io',
+  LOCAL: 'ms-common--metrics.es-global-pro.heimdall.schip.io',
+  ECHO: 'echo.zuplo.io'
+}
 
 const API_DASHBOARD_NAME = 'metrics.frontend.spark'
 const API_ID = process.env.GITHUB_REPOSITORY_ID
@@ -28619,7 +28622,7 @@ const create = async ({
 }) => {
   // log.info(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, JSON.stringify(tags, null, 2))
 
-  return await fetch(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, {
+  return await fetch(`${API_PROTOCOL}://${API_HOST.PRO}/${PATHNAME}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json, text/plain, */*',
@@ -28647,7 +28650,7 @@ const create = async ({
 const health_PATHNAME = 'health'
 
 const read = async () => {
-  return await fetch(`${API_PROTOCOL}://${API_HOST}/${health_PATHNAME}`, {
+  return await fetch(`${API_PROTOCOL}://${API_HOST.PRO}/${health_PATHNAME}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

@@ -1,8 +1,11 @@
 export const API_PROTOCOL = 'https'
-export const API_HOST = 'echo.zuplo.io'
+export const ECHO_API_HOST = 'echo.zuplo.io'
 
-// Prod: ms-common--metrics.es-global-pro.schip.io
-// Local: ms-common--metrics.es-global-pro.heimdall.schip.io
+export const API_HOST = {
+  PRO: 'ms-common--metrics.es-global-pro.schip.io',
+  LOCAL: 'ms-common--metrics.es-global-pro.heimdall.schip.io',
+  ECHO: 'echo.zuplo.io',
+}
 
 export const API_DASHBOARD_NAME = 'metrics.frontend.spark'
 export const API_ID = process.env.GITHUB_REPOSITORY_ID
