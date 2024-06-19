@@ -121,10 +121,12 @@ export async function main() {
     }
 
     try {
+      log.info(path.join(process.cwd(), fileOutput))
+      log.info(JSON.stringify(fileContent, null, 2))
       if (Object.keys(fileContent).length > 0) {
         await sendMetrics({ data: fileContent, organisationName: datadogOrganisationName })
       } else {
-        log.warn('No data to send to Datadog')
+        log.warn('No data to sent to Datadog')
       }
     } catch (error) {
       handleError(error)

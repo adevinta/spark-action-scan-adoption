@@ -28818,17 +28818,19 @@ async function main() {
   if (datadogMetrics) {
     let fileContent
     try {
-      fileContent = (0,external_fs_.readFileSync)(__nccwpck_require__.ab + ".spark-ui.adoption.json", 'utf8')
+      fileContent = (0,external_fs_.readFileSync)(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput), 'utf8')
       fileContent = JSON.parse(fileContent)
     } catch (err) {
       log.error('Error reading file:', err)
     }
 
     try {
+      log.info(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput))
+      log.info(JSON.stringify(fileContent, null, 2))
       if (Object.keys(fileContent).length > 0) {
         await sendMetrics({ data: fileContent, organisationName: datadogOrganisationName })
       } else {
-        log.warn('No data to send to Datadog')
+        log.warn('No data to sent to Datadog')
       }
     } catch (error) {
       handleError(error)
