@@ -22,11 +22,13 @@ export const sendMetrics = async ({ data, organisationName }) => {
         }
       }),
     })
-    log.info(JSON.stringify(response.json(), null, 2))
     log.sucess('Metrics sent')
+    const json = response.json()
+    log.info(JSON.stringify(json, null, 2))
+    log.sucess('Metrics parsed')
   } catch (e) {
     log.error('Metrics service error')
   } finally {
-    log.log('CI Metrics service alive')
+    log.info('CI Metrics service alive')
   }
 }
