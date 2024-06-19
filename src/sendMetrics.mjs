@@ -18,7 +18,7 @@ export const sendMetrics = async ({ data, organisationName }) => {
       organisationName,
       tags: Object.entries(data).map(([key, values]) => {
         return {
-          suffixName: key,
+          suffixName: key.slice(key.startsWith('@') ? 1 : 0),
           content: values.importsCount,
         }
       }),
