@@ -28583,16 +28583,18 @@ const chalkStderr = createChalk({level: stderrColor ? stderrColor.level : 0});
 
 
 // eslint-disable-next-line no-console
-const log_log = console.log
+const log = console.log
 
 // eslint-disable-next-line no-console
-log_log.success = (...args) => console.log(source.green('🎉 ', ...args))
+log.success = (...args) => console.log(source.green('🎉 ', ...args))
 // eslint-disable-next-line no-console
-log_log.error = (...args) => console.log(source.red('💥 ', ...args))
+log.error = (...args) => console.log(source.red('💥 ', ...args))
 // eslint-disable-next-line no-console
-log_log.warn = (...args) => console.log(source.yellow('⚠️ ', ...args))
+log.warn = (...args) => console.log(source.yellow('⚠️ ', ...args))
 // eslint-disable-next-line no-console
-log_log.info = (...args) => console.log(source.cyan('ℹ️ ', ...args))
+log.info = (...args) => console.log(source.cyan('ℹ️ ', ...args))
+
+
 
 ;// CONCATENATED MODULE: ./src/api/configuration.mjs
 const configuration_API_PROTOCOL = 'https'
@@ -28609,6 +28611,7 @@ const API_ID = process.env.GITHUB_REPOSITORY_ID
 const API_DASHBOARD_TAG_SET_ID = 'global.metrics.frontend.spark.scan.adoption'
 
 ;// CONCATENATED MODULE: ./src/api/ci-metrics.mjs
+
 
 
 const PATHNAME = 'ci-metrics'
@@ -28713,15 +28716,15 @@ const sendMetrics = async ({ data, organisationName, authToken }) => {
         }
       }),
     })
-    log_log.success('Metrics sent')
+    log.success('Metrics sent')
     const response = await promise.json()
-    log_log.info(JSON.stringify(response, null, 2))
-    log_log.success('Metrics parsed')
-    log_log.success('CI Metrics service sent')
+    log.info(JSON.stringify(response, null, 2))
+    log.success('Metrics parsed')
+    log.success('CI Metrics service sent')
 
     return response
   } catch (e) {
-    log_log.error('Metrics service error', e)
+    log.error('Metrics service error', e)
   }
 
   return {}
@@ -28834,7 +28837,7 @@ async function main() {
     imports: imports ? ['--imports', imports] : [],
   }
 
-  log_log(JSON.stringify(opts, null, 2))
+  log(JSON.stringify(opts, null, 2))
 
   try {
     await (0,exec.exec)(
@@ -28861,24 +28864,24 @@ async function main() {
       fileContent = JSON.parse(fileContent)
       console.log('parsed')
     } catch (err) {
-      log_log.error('Error reading file:', err)
+      log.error('Error reading file:', err)
     }
 
     try {
-      log_log.info(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput))
-      log_log.info(JSON.stringify(fileContent, null, 2))
+      log.info(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput))
+      log.info(JSON.stringify(fileContent, null, 2))
 
-      log_log.info('pre-sending-metrics')
+      log.info('pre-sending-metrics')
       if (Object.keys(fileContent).length > 0) {
-        log_log.info('data to send to Datadog')
+        log.info('data to send to Datadog')
         await sendMetrics({
           data: fileContent,
           organisationName: datadogOrganisationName,
           auth_token: btoa(`${authUser}:${authPassword}`),
         })
-        log_log.info('data sent')
+        log.info('data sent')
       } else {
-        log_log.warn('No data to sent to Datadog')
+        log.warn('No data to sent to Datadog')
       }
     } catch (error) {
       handleError(error)
