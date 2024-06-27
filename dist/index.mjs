@@ -28818,6 +28818,10 @@ async function main() {
   console.log('datadogMetrics:', datadogMetrics)
   // eslint-disable-next-line no-console
   console.log('datadogOrganisationName:', datadogOrganisationName)
+  // eslint-disable-next-line no-console
+  console.log('authUser:', authUser)
+  // eslint-disable-next-line no-console
+  console.log('authPassword:', authPassword)
 
   const options = {
     listeners: {
