@@ -25,13 +25,17 @@ export const create = ({
     },
     body: JSON.stringify(
       {
-        name,
-        id,
-        organisationName,
-        tags: tags.map(tag => ({
-          tagSetId: API_DASHBOARD_TAG_SET_ID,
-          ...tag,
-        })),
+        metrics: [
+          {
+            name,
+            id,
+            organisationName,
+            tags: tags.map(tag => ({
+              tagSetId: API_DASHBOARD_TAG_SET_ID,
+              ...tag,
+            })),
+          },
+        ],
       },
       null,
       2

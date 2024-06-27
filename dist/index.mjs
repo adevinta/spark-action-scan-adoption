@@ -28632,13 +28632,17 @@ const create = ({
     },
     body: JSON.stringify(
       {
-        name,
-        id,
-        organisationName,
-        tags: tags.map(tag => ({
-          tagSetId: API_DASHBOARD_TAG_SET_ID,
-          ...tag,
-        })),
+        metrics: [
+          {
+            name,
+            id,
+            organisationName,
+            tags: tags.map(tag => ({
+              tagSetId: API_DASHBOARD_TAG_SET_ID,
+              ...tag,
+            })),
+          },
+        ],
       },
       null,
       2
@@ -28684,18 +28688,14 @@ const sendMetrics = async ({ data, organisationName, authToken }) => {
 
   try {
     const promise = await create({
-      metrics: [
-        {
-          organisationName,
-          authToken,
-          tags: Object.entries(data).map(([key, values]) => {
-            return {
-              suffixName: key.slice(key.startsWith('@') ? 1 : 0),
-              content: values.importsCount,
-            }
-          }),
-        },
-      ],
+      organisationName,
+      authToken,
+      tags: Object.entries(data).map(([key, values]) => {
+        return {
+          suffixName: key.slice(key.startsWith('@') ? 1 : 0),
+          content: values.importsCount,
+        }
+      }),
     })
     log.success('Metrics sent')
     const response = await promise.json()
