@@ -28,6 +28,8 @@ export async function main() {
     IMPORTS,
     DATADOG_METRICS,
     DATADOG_ORGANISATION_NAME,
+    AUTH_USER,
+    AUTH_PASSWORD,
   } = process.env
   const {
     debug,
@@ -40,6 +42,8 @@ export async function main() {
     imports,
     datadogMetrics,
     datadogOrganisationName,
+    authUser,
+    authPassword,
   } = {
     debug: DEBUG === 'true',
     fileConfiguration: CONFIGURATION,
@@ -51,6 +55,8 @@ export async function main() {
     imports: IMPORTS ? IMPORTS.split(',') : null,
     datadogMetrics: DATADOG_METRICS === 'true',
     datadogOrganisationName: DATADOG_ORGANISATION_NAME,
+    authUser: AUTH_USER,
+    authPassword: AUTH_PASSWORD,
   }
 
   // eslint-disable-next-line no-console
@@ -124,7 +130,11 @@ export async function main() {
       log.info(path.join(process.cwd(), fileOutput))
       log.info(JSON.stringify(fileContent, null, 2))
       if (Object.keys(fileContent).length > 0) {
-        await sendMetrics({ data: fileContent, organisationName: datadogOrganisationName })
+        await sendMetrics({
+          data: fileContent,
+          organisationName: datadogOrganisationName,
+          auth_token: atob(`${authUser}:${authPassword}`),
+        })
       } else {
         log.warn('No data to sent to Datadog')
       }

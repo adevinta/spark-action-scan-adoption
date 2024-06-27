@@ -28595,13 +28595,13 @@ log.warn = (...args) => console.log(source.yellow('⚠️ ', ...args))
 log.info = (...args) => console.log(source.cyan('ℹ️ ', ...args))
 
 ;// CONCATENATED MODULE: ./src/api/configuration.mjs
-const API_PROTOCOL = 'https'
+const configuration_API_PROTOCOL = 'https'
 const ECHO_API_HOST = 'echo.zuplo.io'
 
-const API_HOST = {
-  PRO: 'ms-common--metrics.es-global-pro.schip.io',
+const configuration_API_HOST = {
+  PRO: 'ms-common--metrics-external.es-global-pro.schip.io',
   LOCAL: 'ms-common--metrics.es-global-pro.heimdall.schip.io',
-  ECHO: 'echo.zuplo.io'
+  ECHO: 'echo.zuplo.io',
 }
 
 const API_DASHBOARD_NAME = 'metrics.frontend.spark'
@@ -28619,14 +28619,16 @@ const create = async ({
   organisationName,
   tags = [],
   tagSet = API_DASHBOARD_TAG_SET_ID,
+  authToken,
 }) => {
   // log.info(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, JSON.stringify(tags, null, 2))
 
-  return await fetch(`${API_PROTOCOL}://${API_HOST.PRO}/${PATHNAME}`, {
+  return await fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.PRO}/${PATHNAME}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Basic ${authToken}}`,
     },
     body: JSON.stringify(
       {
@@ -28668,21 +28670,22 @@ const read = async () => {
 
 
 
-const sendMetrics = async ({ data, organisationName }) => {
-  try {
-    const promise = await read()
-    log.info('Metrics service alive')
-    const response = await promise.json()
-    log.info(JSON.stringify(response, null, 2))
-  } catch (e) {
-    log.error('Metrics service error')
-  } finally {
-    log.info('Sending metrics')
-  }
+const sendMetrics = async ({ data, organisationName, authToken }) => {
+  // try {
+  //   const promise = await health.read()
+  //   log.info('Metrics service alive')
+  //   const response = await promise.json()
+  //   log.info(JSON.stringify(response, null, 2))
+  // } catch (e) {
+  //   log.error('Metrics service error')
+  // } finally {
+  //   log.info('Sending metrics')
+  // }
 
   try {
     const promise = await create({
       organisationName,
+      authToken,
       tags: Object.entries(data).map(([key, values]) => {
         return {
           suffixName: key.slice(key.startsWith('@') ? 1 : 0),
@@ -28735,6 +28738,8 @@ async function main() {
     IMPORTS,
     DATADOG_METRICS,
     DATADOG_ORGANISATION_NAME,
+    AUTH_USER,
+    AUTH_PASSWORD,
   } = external_node_process_namespaceObject.env
   const {
     debug,
@@ -28747,6 +28752,8 @@ async function main() {
     imports,
     datadogMetrics,
     datadogOrganisationName,
+    authUser,
+    authPassword,
   } = {
     debug: DEBUG === 'true',
     fileConfiguration: CONFIGURATION,
@@ -28758,6 +28765,8 @@ async function main() {
     imports: IMPORTS ? IMPORTS.split(',') : null,
     datadogMetrics: DATADOG_METRICS === 'true',
     datadogOrganisationName: DATADOG_ORGANISATION_NAME,
+    authUser: AUTH_USER,
+    authPassword: AUTH_PASSWORD,
   }
 
   // eslint-disable-next-line no-console
@@ -28831,7 +28840,11 @@ async function main() {
       log.info(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput))
       log.info(JSON.stringify(fileContent, null, 2))
       if (Object.keys(fileContent).length > 0) {
-        await sendMetrics({ data: fileContent, organisationName: datadogOrganisationName })
+        await sendMetrics({
+          data: fileContent,
+          organisationName: datadogOrganisationName,
+          auth_token: atob(`${authUser}:${authPassword}`),
+        })
       } else {
         log.warn('No data to sent to Datadog')
       }

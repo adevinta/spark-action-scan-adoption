@@ -14,6 +14,7 @@ export const create = async ({
   organisationName,
   tags = [],
   tagSet = API_DASHBOARD_TAG_SET_ID,
+  authToken,
 }) => {
   // log.info(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, JSON.stringify(tags, null, 2))
 
@@ -22,6 +23,7 @@ export const create = async ({
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Basic ${authToken}}`,
     },
     body: JSON.stringify(
       {

@@ -46,13 +46,12 @@ inputs:
   organisation-name:
     description: 'Datadog Organisation name'
     required: false
-
-
-
-# Define your outputs here.
-outputs:
-  time:
-    description: The time we greeted you
+  authorisation_user:
+    description: 'Adevinta Authorisation user'
+    required: true
+  authorisation_password:
+    description: 'Adevinta Authorisation password'
+    required: true
 
 # Environment
 runs:
@@ -83,3 +82,5 @@ runs:
         IMPORTS: ${{ inputs.imports }}
         DATADOG_METRICS: ${{ inputs.datadog-metrics }}
         DATADOG_ORGANISATION_NAME: ${{ inputs.organisation-name }}
+        AUTH_USER: ${{ inputs.authorisation_user }}
+        AUTH_PASSWORD: ${{ inputs.authorisation_password }}
