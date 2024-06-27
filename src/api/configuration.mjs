@@ -1,4 +1,4 @@
-export const API_PROTOCOL = 'https'
+export const API_PROTOCOL = 'http'
 export const ECHO_API_HOST = 'echo.zuplo.io'
 
 export const API_HOST = {

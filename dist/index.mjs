@@ -28597,7 +28597,7 @@ log.info = (...args) => console.log(source.cyan('ℹ️ ', ...args))
 
 
 ;// CONCATENATED MODULE: ./src/api/configuration.mjs
-const configuration_API_PROTOCOL = 'https'
+const configuration_API_PROTOCOL = 'http'
 const ECHO_API_HOST = 'echo.zuplo.io'
 
 const configuration_API_HOST = {
@@ -28625,10 +28625,7 @@ const create = ({
 }) => {
   return fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.PRO}/${PATHNAME}`, {
     method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
     headers: new Headers({
-      Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/json; charset=utf-8',
       Authorization: `Basic ${authToken}}`,
     }),
