@@ -28613,7 +28613,6 @@ const API_DASHBOARD_TAG_SET_ID = 'global.metrics.frontend.spark.scan.adoption'
 ;// CONCATENATED MODULE: ./src/api/ci-metrics.mjs
 
 
-
 const PATHNAME = 'ci-metrics'
 
 const create = ({
@@ -28624,35 +28623,7 @@ const create = ({
   tagSet = API_DASHBOARD_TAG_SET_ID,
   authToken,
 }) => {
-  log.info(`${configuration_API_PROTOCOL}://${configuration_API_HOST.PRO}/${PATHNAME}`)
-  log.info(
-    JSON.stringify(
-      {
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json; charset=utf-8',
-        Authorization: `Basic ${authToken}}`,
-      },
-      null,
-      2
-    )
-  )
-  log.info(
-    JSON.stringify(
-      {
-        name,
-        id,
-        organisationName,
-        tags: tags.map(tag => ({
-          tagSetId: API_DASHBOARD_TAG_SET_ID,
-          ...tag,
-        })),
-      },
-      null,
-      2
-    )
-  )
-
-  return fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.ECHO}/${PATHNAME}`, {
+  return fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.PRO}/${PATHNAME}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json, text/plain, */*',
@@ -28713,14 +28684,18 @@ const sendMetrics = async ({ data, organisationName, authToken }) => {
 
   try {
     const promise = await create({
-      organisationName,
-      authToken,
-      tags: Object.entries(data).map(([key, values]) => {
-        return {
-          suffixName: key.slice(key.startsWith('@') ? 1 : 0),
-          content: values.importsCount,
-        }
-      }),
+      metrics: [
+        {
+          organisationName,
+          authToken,
+          tags: Object.entries(data).map(([key, values]) => {
+            return {
+              suffixName: key.slice(key.startsWith('@') ? 1 : 0),
+              content: values.importsCount,
+            }
+          }),
+        },
+      ],
     })
     log.success('Metrics sent')
     const response = await promise.json()

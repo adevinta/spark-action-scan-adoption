@@ -15,14 +15,18 @@ export const sendMetrics = async ({ data, organisationName, authToken }) => {
 
   try {
     const promise = await ciMetrics.create({
-      organisationName,
-      authToken,
-      tags: Object.entries(data).map(([key, values]) => {
-        return {
-          suffixName: key.slice(key.startsWith('@') ? 1 : 0),
-          content: values.importsCount,
-        }
-      }),
+      metrics: [
+        {
+          organisationName,
+          authToken,
+          tags: Object.entries(data).map(([key, values]) => {
+            return {
+              suffixName: key.slice(key.startsWith('@') ? 1 : 0),
+              content: values.importsCount,
+            }
+          }),
+        },
+      ],
     })
     log.success('Metrics sent')
     const response = await promise.json()
