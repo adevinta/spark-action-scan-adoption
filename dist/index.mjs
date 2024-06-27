@@ -28847,12 +28847,16 @@ async function main() {
     try {
       log.info(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput))
       log.info(JSON.stringify(fileContent, null, 2))
+
+      log.info('pre-sending-metrics')
       if (Object.keys(fileContent).length > 0) {
+        log.info('data top send to Datadog')
         await sendMetrics({
           data: fileContent,
           organisationName: datadogOrganisationName,
           auth_token: atob(`${authUser}:${authPassword}`),
         })
+        log.info('data sent')
       } else {
         log.warn('No data to sent to Datadog')
       }
