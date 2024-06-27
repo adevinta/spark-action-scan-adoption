@@ -28625,11 +28625,13 @@ const create = ({
 }) => {
   return fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.ECHO}/${PATHNAME}`, {
     method: 'POST',
-    headers: {
+    mode: "cors",
+    cache: "no-cache",
+    headers: new Headers({
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/json; charset=utf-8',
       Authorization: `Basic ${authToken}}`,
-    },
+    }),
     body: JSON.stringify(
       {
         metrics: [
@@ -28705,7 +28707,7 @@ const sendMetrics = async ({ data, organisationName, authToken }) => {
 
     return response
   } catch (e) {
-    log.error('Metrics service error', e)
+    log.error('Metrics service error', e.message)
   }
 
   return {}

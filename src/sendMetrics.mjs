@@ -32,7 +32,7 @@ export const sendMetrics = async ({ data, organisationName, authToken }) => {
 
     return response
   } catch (e) {
-    log.error('Metrics service error', e)
+    log.error('Metrics service error', e.message)
   }
 
   return {}

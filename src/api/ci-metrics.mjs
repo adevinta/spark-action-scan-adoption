@@ -18,11 +18,13 @@ export const create = ({
 }) => {
   return fetch(`${API_PROTOCOL}://${API_HOST.ECHO}/${PATHNAME}`, {
     method: 'POST',
-    headers: {
+    mode: 'cors',
+    cache: 'no-cache',
+    headers: new Headers({
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/json; charset=utf-8',
       Authorization: `Basic ${authToken}}`,
-    },
+    }),
     body: JSON.stringify(
       {
         metrics: [
