@@ -28616,7 +28616,7 @@ const API_DASHBOARD_TAG_SET_ID = 'global.metrics.frontend.spark.scan.adoption'
 
 const PATHNAME = 'ci-metrics'
 
-const create = async ({
+const create = ({
   name = API_DASHBOARD_NAME,
   id = API_ID,
   organisationName,
@@ -28652,7 +28652,7 @@ const create = async ({
     )
   )
 
-  return await fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.PRO}/${PATHNAME}`, {
+  return fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.ECHO}/${PATHNAME}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json, text/plain, */*',

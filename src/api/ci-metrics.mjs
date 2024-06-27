@@ -9,7 +9,7 @@ import {
 
 const PATHNAME = 'ci-metrics'
 
-export const create = async ({
+export const create = ({
   name = API_DASHBOARD_NAME,
   id = API_ID,
   organisationName,
@@ -45,7 +45,7 @@ export const create = async ({
     )
   )
 
-  return await fetch(`${API_PROTOCOL}://${API_HOST.PRO}/${PATHNAME}`, {
+  return fetch(`${API_PROTOCOL}://${API_HOST.ECHO}/${PATHNAME}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json, text/plain, */*',
