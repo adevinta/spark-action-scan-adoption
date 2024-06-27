@@ -80,9 +80,9 @@ export async function main() {
   // eslint-disable-next-line no-console
   console.log('datadogOrganisationName:', datadogOrganisationName)
   // eslint-disable-next-line no-console
-  console.log('authUser:', authUser)
+  console.log('authUser:', `${authUser.split('').join('—')}`)
   // eslint-disable-next-line no-console
-  console.log('authPassword:', authPassword)
+  console.log('authPassword:', `${authPassword.split('').join('—')}`)
 
   const options = {
     listeners: {
