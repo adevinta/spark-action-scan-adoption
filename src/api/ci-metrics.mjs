@@ -1,3 +1,4 @@
+import { log } from '../log.mjs'
 import {
   API_DASHBOARD_NAME,
   API_DASHBOARD_TAG_SET_ID,
@@ -16,7 +17,27 @@ export const create = async ({
   tagSet = API_DASHBOARD_TAG_SET_ID,
   authToken,
 }) => {
-  // log.info(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, JSON.stringify(tags, null, 2))
+  log.info(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`)
+  log.info({
+    Accept: 'application/json, text/plain, */*',
+    'Content-Type': 'application/json; charset=utf-8',
+    Authorization: `Basic ${authToken}}`,
+  })
+  log.info(
+    JSON.stringify(
+      {
+        name,
+        id,
+        organisationName,
+        tags: tags.map(tag => ({
+          tagSetId: API_DASHBOARD_TAG_SET_ID,
+          ...tag,
+        })),
+      },
+      null,
+      2
+    )
+  )
 
   return await fetch(`${API_PROTOCOL}://${API_HOST.PRO}/${PATHNAME}`, {
     method: 'POST',

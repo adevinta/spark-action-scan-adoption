@@ -28583,16 +28583,16 @@ const chalkStderr = createChalk({level: stderrColor ? stderrColor.level : 0});
 
 
 // eslint-disable-next-line no-console
-const log = console.log
+const log_log = console.log
 
 // eslint-disable-next-line no-console
-log.success = (...args) => console.log(source.green('🎉 ', ...args))
+log_log.success = (...args) => console.log(source.green('🎉 ', ...args))
 // eslint-disable-next-line no-console
-log.error = (...args) => console.log(source.red('💥 ', ...args))
+log_log.error = (...args) => console.log(source.red('💥 ', ...args))
 // eslint-disable-next-line no-console
-log.warn = (...args) => console.log(source.yellow('⚠️ ', ...args))
+log_log.warn = (...args) => console.log(source.yellow('⚠️ ', ...args))
 // eslint-disable-next-line no-console
-log.info = (...args) => console.log(source.cyan('ℹ️ ', ...args))
+log_log.info = (...args) => console.log(source.cyan('ℹ️ ', ...args))
 
 ;// CONCATENATED MODULE: ./src/api/configuration.mjs
 const configuration_API_PROTOCOL = 'https'
@@ -28621,7 +28621,27 @@ const create = async ({
   tagSet = API_DASHBOARD_TAG_SET_ID,
   authToken,
 }) => {
-  // log.info(`${API_PROTOCOL}://${API_HOST}/${PATHNAME}`, JSON.stringify(tags, null, 2))
+  log.info(`${configuration_API_PROTOCOL}://${configuration_API_HOST}/${PATHNAME}`)
+  log.info({
+    Accept: 'application/json, text/plain, */*',
+    'Content-Type': 'application/json; charset=utf-8',
+    Authorization: `Basic ${authToken}}`,
+  })
+  log.info(
+    JSON.stringify(
+      {
+        name,
+        id,
+        organisationName,
+        tags: tags.map(tag => ({
+          tagSetId: API_DASHBOARD_TAG_SET_ID,
+          ...tag,
+        })),
+      },
+      null,
+      2
+    )
+  )
 
   return await fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.PRO}/${PATHNAME}`, {
     method: 'POST',
@@ -28693,15 +28713,15 @@ const sendMetrics = async ({ data, organisationName, authToken }) => {
         }
       }),
     })
-    log.success('Metrics sent')
+    log_log.success('Metrics sent')
     const response = await promise.json()
-    log.info(JSON.stringify(response, null, 2))
-    log.success('Metrics parsed')
-    log.success('CI Metrics service sent')
+    log_log.info(JSON.stringify(response, null, 2))
+    log_log.success('Metrics parsed')
+    log_log.success('CI Metrics service sent')
 
     return response
   } catch (e) {
-    log.error('Metrics service error', e)
+    log_log.error('Metrics service error', e)
   }
 
   return {}
@@ -28814,7 +28834,7 @@ async function main() {
     imports: imports ? ['--imports', imports] : [],
   }
 
-  log(JSON.stringify(opts, null, 2))
+  log_log(JSON.stringify(opts, null, 2))
 
   try {
     await (0,exec.exec)(
@@ -28841,24 +28861,24 @@ async function main() {
       fileContent = JSON.parse(fileContent)
       console.log('parsed')
     } catch (err) {
-      log.error('Error reading file:', err)
+      log_log.error('Error reading file:', err)
     }
 
     try {
-      log.info(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput))
-      log.info(JSON.stringify(fileContent, null, 2))
+      log_log.info(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput))
+      log_log.info(JSON.stringify(fileContent, null, 2))
 
-      log.info('pre-sending-metrics')
+      log_log.info('pre-sending-metrics')
       if (Object.keys(fileContent).length > 0) {
-        log.info('data to send to Datadog')
+        log_log.info('data to send to Datadog')
         await sendMetrics({
           data: fileContent,
           organisationName: datadogOrganisationName,
           auth_token: btoa(`${authUser}:${authPassword}`),
         })
-        log.info('data sent')
+        log_log.info('data sent')
       } else {
-        log.warn('No data to sent to Datadog')
+        log_log.warn('No data to sent to Datadog')
       }
     } catch (error) {
       handleError(error)
