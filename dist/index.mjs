@@ -28623,7 +28623,7 @@ const create = ({
   tagSet = API_DASHBOARD_TAG_SET_ID,
   authToken,
 }) => {
-  return fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.PRO}/${PATHNAME}`, {
+  return fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.ECHO}/${PATHNAME}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json, text/plain, */*',
