@@ -28818,10 +28818,6 @@ async function main() {
   console.log('datadogMetrics:', datadogMetrics)
   // eslint-disable-next-line no-console
   console.log('datadogOrganisationName:', datadogOrganisationName)
-  // eslint-disable-next-line no-console
-  console.log('authUser:', `${authUser.split('').join('—')}`)
-  // eslint-disable-next-line no-console
-  console.log('authPassword:', `${authPassword.split('').join('—')}`)
 
   const options = {
     listeners: {
@@ -28887,7 +28883,7 @@ async function main() {
         await sendMetrics({
           data: fileContent,
           organisationName: datadogOrganisationName,
-          auth_token: btoa(`${authUser}:${authPassword}`),
+          authToken: btoa(`${authUser}:${authPassword}`),
         })
         log.info('data sent')
       } else {
