@@ -28623,10 +28623,10 @@ const create = ({
   tagSet = API_DASHBOARD_TAG_SET_ID,
   authToken,
 }) => {
-  return fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.ECHO}/${PATHNAME}`, {
+  return fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.PRO}/${PATHNAME}`, {
     method: 'POST',
-    mode: "cors",
-    cache: "no-cache",
+    mode: 'cors',
+    cache: 'no-cache',
     headers: new Headers({
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/json; charset=utf-8',
