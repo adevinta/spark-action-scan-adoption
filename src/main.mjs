@@ -140,11 +140,11 @@ export async function main() {
 
       log.info('pre-sending-metrics')
       if (Object.keys(fileContent).length > 0) {
-        log.info('data top send to Datadog')
+        log.info('data to send to Datadog')
         await sendMetrics({
           data: fileContent,
           organisationName: datadogOrganisationName,
-          auth_token: atob(`${authUser}:${authPassword}`),
+          auth_token: btoa(`${authUser}:${authPassword}`),
         })
         log.info('data sent')
       } else {
