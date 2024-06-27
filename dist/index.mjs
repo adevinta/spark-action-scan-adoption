@@ -28816,22 +28816,30 @@ async function main() {
 
   log(JSON.stringify(opts, null, 2))
 
-  await (0,exec.exec)(
-    'node',
-    [
-      'node_modules/@spark-ui/cli-utils/bin/spark.mjs',
-      'scan',
-      'adoption',
-      ...Object.values(opts).flat(),
-    ],
-    options
-  )
+  try {
+    await (0,exec.exec)(
+      'node',
+      [
+        'node_modules/@spark-ui/cli-utils/bin/spark.mjs',
+        'scan',
+        'adoption',
+        ...Object.values(opts).flat(),
+      ],
+      options
+    )
+  } catch (error) {
+    console.log('Error executing adoption script:', error)
+    external_node_process_namespaceObject.exit(1)
+  }
 
   if (datadogMetrics) {
     let fileContent
     try {
+      console.log('reading results')
       fileContent = (0,external_fs_.readFileSync)(external_path_.join(external_node_process_namespaceObject.cwd(), fileOutput), 'utf8')
+      console.log('readed')
       fileContent = JSON.parse(fileContent)
+      console.log('parsed')
     } catch (err) {
       log.error('Error reading file:', err)
     }
