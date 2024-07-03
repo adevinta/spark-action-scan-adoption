@@ -3,7 +3,7 @@ import { log } from './log.mjs'
 
 export const sendMetrics = async ({ data, organisationName, authToken }) => {
   // try {
-  //   const promise = await health.read()
+  //   const promise = await health.read({authToken})
   //   log.info('Metrics service alive')
   //   const response = await promise.json()
   //   log.info(JSON.stringify(response, null, 2))
@@ -25,14 +25,17 @@ export const sendMetrics = async ({ data, organisationName, authToken }) => {
       }),
     })
     log.success('Metrics sent')
-    const response = await promise.json()
-    log.info(JSON.stringify(response, null, 2))
-    log.success('Metrics parsed')
-    log.success('CI Metrics service sent')
+    if (promise.status === 200) {
+      log.success('Metrics sent')
 
-    return response
-  } catch (e) {
-    log.error('Metrics service error', e.message)
+      return promise.status
+    } else {
+      log.error('Metrics service error')
+
+      return promise.status
+    }
+  } catch (error) {
+    log.error('Metrics service error', error.message)
   }
 
   return {}

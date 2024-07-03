@@ -20,7 +20,7 @@ export const create = ({
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/json; charset=utf-8',
-      Authorization: `Basic ${authToken}}`,
+      Authorization: `Basic ${authToken}`,
     }),
     body: JSON.stringify(
       {

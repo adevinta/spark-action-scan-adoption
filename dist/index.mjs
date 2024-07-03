@@ -28627,7 +28627,7 @@ const create = ({
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/json; charset=utf-8',
-      Authorization: `Basic ${authToken}}`,
+      Authorization: `Basic ${authToken}`,
     }),
     body: JSON.stringify(
       {
@@ -28654,11 +28654,12 @@ const create = ({
 
 const health_PATHNAME = 'health'
 
-const read = async () => {
+const read = async ({authToken}) => {
   return await fetch(`${API_PROTOCOL}://${API_HOST.PRO}/${health_PATHNAME}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Basic ${authToken}`,
     },
   })
 }
@@ -28675,7 +28676,7 @@ const read = async () => {
 
 const sendMetrics = async ({ data, organisationName, authToken }) => {
   // try {
-  //   const promise = await health.read()
+  //   const promise = await health.read({authToken})
   //   log.info('Metrics service alive')
   //   const response = await promise.json()
   //   log.info(JSON.stringify(response, null, 2))
@@ -28697,12 +28698,15 @@ const sendMetrics = async ({ data, organisationName, authToken }) => {
       }),
     })
     log.success('Metrics sent')
-    const response = await promise.json()
-    log.info(JSON.stringify(response, null, 2))
-    log.success('Metrics parsed')
-    log.success('CI Metrics service sent')
+    if (promise.status === 200) {
+      log.success('Metrics sent')
+      return promise.status
+    } else {
+      log.error('Metrics service error')
+      return promise.status
+    }
 
-    return response
+    return {}
   } catch (e) {
     log.error('Metrics service error', e.message)
   }
