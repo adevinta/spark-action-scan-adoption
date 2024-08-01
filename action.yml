@@ -59,7 +59,7 @@ runs:
       with:
         node-version: '20'
     - name: Install dependencies
-      run: npm i @spark-ui/cli-utils@beta
+      run: npm i @spark-ui/cli-utils
       shell: bash
     - name: Run script
       # run: npx @spark-ui/cli-utils scan --config ${{ inputs.configuration }} --token ${{ inputs.github-token }} --debug ${{ inputs.debug }}
