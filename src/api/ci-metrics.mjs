@@ -24,20 +24,24 @@ export const create = ({
     }),
     body: JSON.stringify(
       {
-        metrics: name,
-        repositoryId: id,
-        organisationName,
-        tags: [
+        metrics: [
           {
-            tagSetId: tagSet,
-            suffixName: organisationName,
-            value: true,
+            name,
+            repositoryId: id,
+            organisationName,
+            tags: [
+              {
+                tagSetId: tagSet,
+                key: organisationName,
+                value: true,
+              },
+            ],
+            values: data.map(pkg => ({
+              key: pkg.packageName,
+              value: pkg.value,
+            })),
           },
         ],
-        values: data.map(pkg => ({
-          key: pkg.packageName,
-          value: pkg.value,
-        })),
       },
       null,
       2
