@@ -28601,8 +28601,8 @@ const configuration_API_PROTOCOL = 'http'
 const ECHO_API_HOST = 'echo.zuplo.io'
 
 const configuration_API_HOST = {
-  PRO: 'ms-common--metrics-external.es-global-pro.schip.io',
-  LOCAL: 'ms-common--metrics.es-global-pro.heimdall.schip.io',
+  PRO: 'ms-common--metrics-external.es-global-pro.schip.io/v2',
+  LOCAL: 'ms-common--metrics.es-global-pro.heimdall.schip.io/v2',
   ECHO: 'echo.zuplo.io',
 }
 
@@ -28619,7 +28619,7 @@ const create = ({
   name = API_DASHBOARD_NAME,
   id = API_ID,
   organisationName,
-  tags = [],
+  data = [],
   tagSet = API_DASHBOARD_TAG_SET_ID,
   authToken,
 }) => {
@@ -28631,17 +28631,18 @@ const create = ({
     }),
     body: JSON.stringify(
       {
-        metrics: [
-          {
-            name,
-            id,
-            organisationName,
-            tags: tags.map(tag => ({
-              tagSetId: API_DASHBOARD_TAG_SET_ID,
-              ...tag,
-            })),
-          },
-        ],
+        metrics: name,
+        repositoryId: id,
+        organisationName,
+        tags: {
+          tagSetId: tagSet,
+          suffixName: organisationName,
+          value: true,
+        },
+        values: data.map(pkg => ({
+          key: pkg.packageName,
+          value: pkg.value,
+        })),
       },
       null,
       2
@@ -28654,7 +28655,7 @@ const create = ({
 
 const health_PATHNAME = 'health'
 
-const read = async ({authToken}) => {
+const read = async ({ authToken }) => {
   return await fetch(`${API_PROTOCOL}://${API_HOST.PRO}/${health_PATHNAME}`, {
     method: 'GET',
     headers: {
@@ -28690,25 +28691,25 @@ const sendMetrics = async ({ data, organisationName, authToken }) => {
     const promise = await create({
       organisationName,
       authToken,
-      tags: Object.entries(data).map(([key, values]) => {
+      data: Object.entries(data).map(([key, values]) => {
         return {
-          suffixName: key.slice(key.startsWith('@') ? 1 : 0),
-          content: values.importsCount,
+          packageName: key.slice(key.startsWith('@') ? 1 : 0),
+          value: values.importsCount,
         }
       }),
     })
     log.success('Metrics sent')
     if (promise.status === 200) {
       log.success('Metrics sent')
+
       return promise.status
     } else {
       log.error('Metrics service error')
+
       return promise.status
     }
-
-    return {}
-  } catch (e) {
-    log.error('Metrics service error', e.message)
+  } catch (error) {
+    log.error('Metrics service error', error.message)
   }
 
   return {}
