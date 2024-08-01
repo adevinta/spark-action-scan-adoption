@@ -16,8 +16,6 @@ export const create = ({
   tagSet = API_DASHBOARD_TAG_SET_ID,
   authToken,
 }) => {
-  console.log('--- ', authToken.split('').join('.'))
-
   return fetch(`${API_PROTOCOL}://${API_HOST.PRO}/${PATHNAME}`, {
     method: 'POST',
     headers: new Headers({
