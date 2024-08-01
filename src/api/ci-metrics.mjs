@@ -27,11 +27,13 @@ export const create = ({
         metrics: name,
         repositoryId: id,
         organisationName,
-        tags: {
-          tagSetId: tagSet,
-          suffixName: organisationName,
-          value: true,
-        },
+        tags: [
+          {
+            tagSetId: tagSet,
+            suffixName: organisationName,
+            value: true,
+          },
+        ],
         values: data.map(pkg => ({
           key: pkg.packageName,
           value: pkg.value,
