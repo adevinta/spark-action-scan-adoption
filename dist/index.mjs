@@ -28639,8 +28639,8 @@ const create = ({
             tags: [
               {
                 tagSetId: tagSet,
-                key: organisationName,
-                value: true,
+                key: 'tenant',
+                value: organisationName,
               },
             ],
             values: data.map(pkg => ({
