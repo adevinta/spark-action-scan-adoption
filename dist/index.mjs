@@ -28623,6 +28623,32 @@ const create = ({
   tagSet = API_DASHBOARD_TAG_SET_ID,
   authToken,
 }) => {
+  console.log(
+    JSON.stringify(
+      {
+        metrics: [
+          {
+            name,
+            repositoryId: id,
+            organisationName,
+            tags: [
+              {
+                tagSetId: tagSet,
+                key: organisationName,
+                value: true,
+              },
+            ],
+            values: data.map(pkg => ({
+              key: pkg.packageName,
+              value: pkg.value,
+            })),
+          },
+        ],
+      },
+      null,
+      2
+    )
+  )
   return fetch(`${configuration_API_PROTOCOL}://${configuration_API_HOST.PRO}/${PATHNAME}`, {
     method: 'POST',
     headers: new Headers({
