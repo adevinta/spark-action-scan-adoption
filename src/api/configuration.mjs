@@ -2,8 +2,8 @@ export const API_PROTOCOL = 'http'
 export const ECHO_API_HOST = 'echo.zuplo.io'
 
 export const API_HOST = {
-  PRO: 'ms-common--metrics-external.es-global-pro.schip.io',
-  LOCAL: 'ms-common--metrics.es-global-pro.heimdall.schip.io',
+  PRO: 'ms-common--metrics-external.es-global-pro.schip.io/v2',
+  LOCAL: 'ms-common--metrics.es-global-pro.heimdall.schip.io/v2',
   ECHO: 'echo.zuplo.io',
 }
 

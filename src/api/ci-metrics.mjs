@@ -12,7 +12,7 @@ export const create = ({
   name = API_DASHBOARD_NAME,
   id = API_ID,
   organisationName,
-  tags = [],
+  data = [],
   tagSet = API_DASHBOARD_TAG_SET_ID,
   authToken,
 }) => {
@@ -24,17 +24,18 @@ export const create = ({
     }),
     body: JSON.stringify(
       {
-        metrics: [
-          {
-            name,
-            id,
-            organisationName,
-            tags: tags.map(tag => ({
-              tagSetId: API_DASHBOARD_TAG_SET_ID,
-              ...tag,
-            })),
-          },
-        ],
+        metrics: name,
+        repositoryId: id,
+        organisationName,
+        tags: {
+          tagSetId: tagSet,
+          suffixName: organisationName,
+          value: true,
+        },
+        values: data.map(pkg => ({
+          key: pkg.packageName,
+          value: pkg.value,
+        })),
       },
       null,
       2

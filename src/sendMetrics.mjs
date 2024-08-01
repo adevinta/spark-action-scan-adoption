@@ -17,10 +17,10 @@ export const sendMetrics = async ({ data, organisationName, authToken }) => {
     const promise = await ciMetrics.create({
       organisationName,
       authToken,
-      tags: Object.entries(data).map(([key, values]) => {
+      data: Object.entries(data).map(([key, values]) => {
         return {
-          suffixName: key.slice(key.startsWith('@') ? 1 : 0),
-          content: values.importsCount,
+          packageName: key.slice(key.startsWith('@') ? 1 : 0),
+          value: values.importsCount,
         }
       }),
     })

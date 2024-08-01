@@ -12,9 +12,6 @@ inputs:
   configuration:
     description: 'Configuration file for the script.'
     required: false
-  output:
-    description: 'Output file for the script.'
-    required: false
   verbose:
     description: 'Whether to tell the GitHub client to log details of its requests. true or false. Default is to run in debug mode when the GitHub Actions step debug logging is turned on.'
     required: false
